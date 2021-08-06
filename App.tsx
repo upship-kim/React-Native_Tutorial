@@ -7,19 +7,19 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'; //하단 네�
 import { HomeScreen } from './src/screens/HomeScreen';
 
 const switchNavigator = createSwitchNavigator({
-    // landingStack: {
-    //     // 1차 구분: landingStackNavigator와 homeBottomTabNavigator로 나누어짐
-    //     screen: createStackNavigator(
-    //         {
-    //             Landing: LandingScreen,
-    //         },
-    //         {
-    //             defaultNavigationOptions: {
-    //                 headerShown: false,
-    //             },
-    //         },
-    //     ),
-    // },
+    landingStack: {
+        // 1차 구분: landingStackNavigator와 homeBottomTabNavigator로 나누어짐
+        screen: createStackNavigator(
+            {
+                Landing: LandingScreen,
+            },
+            {
+                defaultNavigationOptions: {
+                    headerShown: false,
+                },
+            },
+        ),
+    },
     homeStack: createBottomTabNavigator({
         // 1차 구분: landingStackNavigator와 homeBottomTabNavigator로 나누어짐
 

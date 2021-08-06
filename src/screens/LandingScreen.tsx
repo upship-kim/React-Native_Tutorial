@@ -2,22 +2,26 @@ import React, { useState, useReducer, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import * as Location from 'expo-location';
 
+import { useNavigation } from '../utils';
+
 const screenWidth = Dimensions.get('screen').width;
 
 export const LandingScreen = () => {
     // const { addressContainer } = styles; //문법구조분해를 통해 불필요한 Styles 반복 제거
-
+    const { navigate } = useNavigation();
     const [errorMsg, setErrorMsg] = useState('');
     const [address, setAddress] = useState<Location.LocationGeocodedAddress>();
     const [displayAddress, setDisplayAddress] = useState('');
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestBackgroundPermissionsAsync();
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            console.log('status', status);
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location is not granted');
             }
             let location: any = await Location.getCurrentPositionAsync({});
+            console.log('location', location);
             const { coords } = location;
 
             if (coords) {
@@ -32,6 +36,13 @@ export const LandingScreen = () => {
                     setAddress(item);
                     let currentAddress = `${item.name},${item.street},${item.postalCode}, ${item.country}`;
                     setDisplayAddress(currentAddress);
+
+                    if (currentAddress.length > 0) {
+                        setTimeout(() => {
+                            navigate('homeStack');
+                        }, 2000);
+                    }
+
                     return;
                 }
             } else {
