@@ -1,10 +1,45 @@
-import React from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
+import * as Location from 'expo-location';
+import { LocationGeocodedLocation } from 'expo-location';
 
 const screenWidth = Dimensions.get('screen').width;
 
 export const LandingScreen = () => {
-    // const { addressContainer } = styles;
+    // const { addressContainer } = styles; //문법구조분해를 통해 불필요한 Styles 반복 제거
+
+    const [errorMsg, setErrorMsg] = useState('');
+    const [address, setAddress] = useState<Location.LocationGeocodedAddress>();
+    const [displayAddress, setDisplayAddress] = useState('');
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestBackgroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location is not granted');
+            }
+            let location: any = await Location.getCurrentPositionAsync({});
+            const { coords } = location;
+
+            if (coords) {
+                const { latitude, longitude } = coords;
+
+                let addressResponse: any = await Location.reverseGeocodeAsync({
+                    latitude,
+                    longitude,
+                });
+
+                for (let item of addressResponse) {
+                    setAddress(item);
+                    let currentAddress = `${item.name},${item.street},${item.postalCode}, ${item.country}`;
+                    setDisplayAddress(currentAddress);
+                    return;
+                }
+            } else {
+                //notify user something went wrong with location
+            }
+        })();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -22,7 +57,9 @@ export const LandingScreen = () => {
                     </Text>
                 </View>
                 <Text style={styles.addressText}>
-                    Waiting for Current Location
+                    {displayAddress
+                        ? displayAddress
+                        : 'Waiting for Current Location'}
                 </Text>
             </View>
             <View style={styles.footer}>
