@@ -1,12 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { LandingScreen } from './src/screens/LandingScreen';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation'; //네비게이션 생성
+import {
+    createAppContainer,
+    createNavigationContainer,
+    createSwitchNavigator,
+} from 'react-navigation'; //네비게이션 생성
 import { createStackNavigator } from 'react-navigation-stack'; //screen을 쌓아주는애
 import { createBottomTabNavigator } from 'react-navigation-tabs'; //하단 네비게이션 바
 import { HomeScreen } from './src/screens/HomeScreen';
 import CartScreen from './src/screens/CartScreen';
 import OfferScreen from './src/screens/OfferScreen';
+import CartOneScreen from './src/screens/CartOneScreen';
+import CartTwoScreen from './src/screens/CartTwoScreen';
+import { NavigationContainer } from '@react-navigation/native';
 
 // const switchNavigator = createSwitchNavigator({
 //     landingStack: {
@@ -65,6 +72,7 @@ import OfferScreen from './src/screens/OfferScreen';
 //             //homeBottomTabNavigator 에서 StackNavigator로 2차 구분
 //             screen: createStackNavigator({
 //                 CartPage: CartScreen,
+//                 // CartPage: (CartScreen),
 //             }),
 //             navigationOptions: {
 //                 tabBarIcon: ({ focused, tintColor }) => {
@@ -122,7 +130,11 @@ const switchNavigator = createSwitchNavigator({
 const AppNavigation = createAppContainer(switchNavigator);
 
 export default function App() {
-    return <AppNavigation></AppNavigation>;
+    return (
+        <NavigationContainer>
+            <AppNavigation />
+        </NavigationContainer>
+    );
 }
 
 const styles = StyleSheet.create({

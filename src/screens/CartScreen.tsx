@@ -23,11 +23,7 @@ const CartBottomTap = createBottomTabNavigator({
 const CartStack = createStackNavigator({ CartBottomTap });
 const CartApp = createAppContainer(CartBottomTap);
 const CartScreen = () => {
-    return (
-        <CartApp>
-            <CartBottomTap />
-        </CartApp>
-    );
+    return <CartApp />;
 };
 
 export default CartScreen;
